@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">User Skill Levels</h1>
+
+    {% if error_message %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Error:</strong>
+            <span class="block sm:inline">{{ error_message }}</span>
+        </div>
+    {% endif %}
+
+    {% if game_username %}
+        <h2 class="text-xl font-semibold mb-2">Skill Levels for Game Username: {{ game_username }}</h2>
+
+        {% if update_data_list %}
+            <ul>
+            {% for update_data in update_data_list %}
+                <li class="mb-4 p-4 bg-gray-800 rounded-lg">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="text-lg font-semibold text-white">
+                            Datapoint from {{ update_data.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+                        </h3>
+                        <form action="{{ url_for('admin_delete_user_levels', update_id=update_data.update_id) }}" method="POST">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+                        </form>
+                    </div>
+                    <div class="overflow-x-auto">
+                        {% for region, skills in update_data.skill_data.items() %}
+                            <h4 class="text-md font-semibold mb-1 text-gray-300">{{ region }}</h4>
+                            <table class="min-w-full bg-gray-700 mb-2">
+                                <thead>
+                                    <tr>
+                                        <th class="px-2 py-1 text-white text-left">Skill</th>
+                                        <th class="px-2 py-1 text-white text-left">Level</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for skill in skills %}
+                                        <tr class="hover:bg-gray-600">
+                                            <td class="border px-2 py-1 text-white">{{ skill.name }}</td>
+                                            <td class="border px-2 py-1 text-white">{{ skill.level }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        {% endfor %}
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No skill data available for this user.</p>
+        {% endif %}
+    {% endif %}
+
+    <div class="mt-4">
+        <a href="{{ url_for('admin_dashboard') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Back to Admin Dashboard</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results - Brighter Progress{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-bold mb-4">Search</h1>
+        <form action="/search" method="get" class="mb-4">
+            <input type="text" name="username" placeholder="Search Username" value="{{ search_term }}" class="bg-gray-800 border border-gray-700 p-2 rounded text-white focus:outline-none focus:border-blue-500">
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Search</button>
+        </form>
+
+
+        {% if region_level_history %}
+        <div class="mt-8">
+            <h2 class="text-xl font-bold mb-4">Region Leveling Progress (Last 30 Days)</h2>
+            <canvas id="regionLevelChart" width="400" height="200"></canvas>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        </div>
+        <script>
+            var regionLevelHistoryData = {{ region_level_history|tojson }};
+            var regionCtx = document.getElementById('regionLevelChart').getContext('2d');
+            
+            const randomColorRegion = () => {
+                const r = Math.floor(Math.random() * 150) + 100; // Red component (100-255 for brightness)
+                const g = Math.floor(Math.random() * 150) + 100; // Green component
+                const b = Math.floor(Math.random() * 150) + 100; // Blue component
+                return `rgb(${r}, ${g}, ${b})`;
+            };
+
+            if (regionLevelHistoryData && Object.keys(regionLevelHistoryData).length > 0 && regionCtx) {
+                var regionDatasets = [];
+                var regionLabels = [];
+                var regionLabelsAdded = false;
+                
+                for (var regionName in regionLevelHistoryData) {
+                    var regionData = regionLevelHistoryData[regionName];
+                    var dates = Object.keys(regionData).sort();
+                    var dataPoints = dates.map(date => regionData[date]);
+                    
+                    if (!regionLabelsAdded) {
+                        regionLabels = dates;
+                        regionLabelsAdded = true;
+                    }
+                    
+                    regionDatasets.push({
+                        label: regionName,
+                        data: dataPoints,
+                        borderColor: randomColorRegion(),
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        fill: false
+                    });
+                }
+
+                var myRegionChart = new Chart(regionCtx, {
+                    type: 'line',
+                    data: {
+                        labels: regionLabels,
+                        datasets: regionDatasets
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Region Total Level',
+                                    color: 'white'
+                                },
+                                ticks: {
+                                    color: 'white'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Date',
+                                    color: 'white'
+                                },
+                                ticks: {
+                                    color: 'white'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        </script>
+        {% endif %}
+
+        {% if level_history %}
+        <div class="mt-8">
+            <h2 class="text-xl font-bold mb-4">Leveling Progress (Last 30 Days)</h2>
+            <canvas id="levelChart" width="400" height="200"></canvas>
+        </div>
+        <script>
+            var levelHistoryData = {{ level_history|tojson }};
+            var ctx = document.getElementById('levelChart').getContext('2d');
+            
+            const randomColor = () => {
+                const r = Math.floor(Math.random() * 150) + 100; // Red component (100-255 for brightness)
+                const g = Math.floor(Math.random() * 150) + 100; // Green component
+                const b = Math.floor(Math.random() * 150) + 100; // Blue component
+                return `rgb(${r}, ${g}, ${b})`;
+            };
+
+            if (levelHistoryData && ctx) {
+                var datasets = [];
+                var labels = [];
+                var labelsAdded = false;
+                
+                for (var skillName in levelHistoryData) {
+                    var skillData = levelHistoryData[skillName];
+                    var dates = Object.keys(skillData).sort();
+                    var dataPoints = dates.map(date => skillData[date]);
+                    
+                    if (!labelsAdded) {
+                        labels = dates;
+                        labelsAdded = true;
+                    }
+                    
+                    datasets.push({
+                        label: skillName,
+                        data: dataPoints,
+                        borderColor: randomColor(),
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        fill: false
+                    });
+                }
+
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: datasets
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Skill Level',
+                                    color: 'white'
+                                },
+                                ticks: {
+                                    color: 'white'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Date',
+                                    color: 'white'
+                                },
+                                ticks: {
+                                    color: 'white'
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        </script>
+        {% endif %}
+
+        {% if updates_by_date %}
+            {% for date, users in updates_by_date.items() %}
+                {% if loop.first %}
+                    <h2 class="text-xl font-bold mt-6 mb-2">{{ date }}</h2>
+                    {% for username, updates in users.items() %}
+                        <h3 class="text-lg font-semibold mt-4 mb-2">{{ username }}</h3>
+                        {% if progress_data %}
+                        <div class="w-full">
+                            <h4 class="text-md font-semibold mt-4 mb-2">Progress (Last 24 Hours)</h4>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                    {% set region_order = ["Hopeport", "Hopeforest", "Mine of Mantuban", "Crenopolis"] %}
+                                    {% for region_name in region_order %}
+                                        {% if region_name in progress_data %}
+                                        <div class="mb-4">
+                                            <div class="overflow-x-auto">
+                                                <h5 class="font-bold mb-2 text-xl text-white border-b border-gray-600 pb-1">{{ region_name }}</h5>
+                                                <table class="bg-gray-800 rounded-md shadow-md">
+                                                <thead class="bg-gray-700 text-left rounded-t-md">
+                                                    <tr>
+                                                        <th class="px-4 py-2 text-white">Skill</th>
+                                                        <th class="px-4 py-2 text-white">Previous</th>
+                                                        <th class="px-4 py-2 text-white">Current</th>
+                                                        <th class="px-4 py-2 text-white">Gain</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="font-semibold bg-gray-7
+800">
+                                                        <td class="px-4 py-2">Total</td>
+                                                        <td class="px-4 py-2 text-center">{{ region_totals[region_name]['previous']|default(0) }}</td>
+                                                        <td class="px-4 py-2 text-center">{{ region_totals[region_name]['current']|default(0) }}</td>
+                                                        <td class="px-4 py-2 text-center {% if region_totals[region_name]['current']|default(0) - region_totals[region_name]['previous']|default(0) > 0 %}text-green-400{% endif %}">
+                                                            {{ (region_totals[region_name]['current']|default(0) - region_totals[region_name]['previous']|default(0))|round(2) }}
+                                                        </td>
+                                                    </tr>
+                                                    {% for skill_name, data in progress_data[region_name].items() %}
+                                                        {% if data is mapping %}
+                                                            <tr class="{{ loop.cycle('bg-gray-850', 'bg-gray-800') }}">
+                                                                <td class="px-4 py-2">{{ skill_name }}</td>
+                                                                <td class="px-4 py-2 text-center">{{ data.previous|default(0) }}</td>
+                                                                <td class="px-4 py-2 text-center">{{ data.current|default(0) }}</td>
+                                                                <td class="px-4 py-2 text-center {% if data.current|default(0) - data.previous|default(0) > 0 %}text-green-400{% endif %}">
+                                                                    {{ (data.current|default(0) - data.previous|default(0))|round(2) }}
+                                                                </td>
+                                                            </tr>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p>No users found matching "{{ search_term }}".</p>
+        {% endif %}
+    </div>
+{% endblock %}

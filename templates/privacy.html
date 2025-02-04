@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Privacy Policy - Brighter Progress{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-bold mb-4">Privacy Policy</h1>
+        <p>This privacy policy explains how we collect, use, and protect your personal information in compliance with the General Data Protection Regulation (GDPR) and other applicable data protection laws.</p>
+
+        <h2 class="text-xl font-bold mt-6 mb-2">1. Personal Data We Collect</h2>
+        <p>We collect and process the following categories of personal data:</p>
+        <ul class="list-disc pl-8">
+            <li>Username (encrypted using AES-256)</li>
+            <li>Password (hashed using scrypt)</li>
+            <li>Game username (encrypted at rest, if provided)</li>
+            <li>Skill level data derived from images you upload</li>
+            <li>Your consent to this Privacy Policy, obtained during registration</li>
+        </ul>
+
+        <h2 class="text-xl font-bold mt-6 mb-2">2. How We Use Your Data</h2>
+        <p>We use your personal data for the following purposes:</p>
+        <ul class="list-disc pl-8">
+            <li>To authenticate your identity and manage your user account</li>
+            <li>To track and display your skill progress</li>
+            <li>To allow you to link your game username to your account, if you choose to do so</li>
+            <li>To comply with legal obligations and protect our legal rights</li>
+        </ul>
+
+        <h2 class="text-xl font-bold mt-6 mb-2">3. Data Security Measures</h2>
+        <p>We implement comprehensive security measures to protect your personal data:</p>
+        <ul class="list-disc pl-8">
+            <li>Usernames and game usernames encrypted using Fernet encryption with a securely managed application-wide secret key</li>
+            <li>Passwords hashed using the scrypt key derivation function</li>
+            <li>Secure Socket Layer (SSL/TLS) encryption for all data transmissions</li>
+            <li>Secure session cookies with HTTPOnly and SameSite attributes</li>
+            <li>Cross-Site Request Forgery (CSRF) protection</li>
+            <li>Implementation of security HTTP headers:
+                <ul class="list-disc pl-8">
+                    <li>X-Content-Type-Options: nosniff</li>
+                    <li>X-Frame-Options: DENY</li>
+                    <li>X-XSS-Protection: 1; mode=block</li>
+                </ul>
+            </li>
+            <li>Regular security audits and vulnerability assessments</li>
+        </ul>
+
+        <h2 class="text-xl font-bold mt-4 mb-2">4. Data Retention</h2>
+        <p>We retain your personal data:</p>
+        <ul class="list-disc pl-8">
+            <li>While your account is active</li>
+            <li>Upon your request to delete your account, all your personal data will be immediately and permanently deleted from our systems</li>
+        </ul>
+
+        <h2 class="text-xl font-bold mt-4 mb-2">5. Your Rights</h2>
+        <p>Under GDPR, you have the right to:</p>
+        <ul class="list-disc pl-8">
+            <li>Access your personal data</li>
+            <li>Rectify inaccurate data</li>
+            <li>Request deletion of your data</li>
+            <li>Export your data in a machine-readable format</li>
+            <li>Withdraw consent for data processing</li>
+        </ul>
+
+        <h2 class="text-xl font-bold mt-4 mb-2">6. Cookies</h2>
+        <p>We use session cookies strictly for authentication purposes. These cookies are:</p>
+        <ul class="list-disc pl-8">
+            <li>Essential for site functionality</li>
+            <li>Automatically deleted when you close your browser</li>
+        </ul>
+
+        <h2 class="text-xl font-bold mt-4 mb-2">7. Third-Party Services</h2>
+        <p>We use the Mistral AI API to process images you upload for the purpose of extracting skill level data. When you upload an image:</p>
+        <ul class="list-disc pl-8">
+            <li>The image is sent to Mistral AI's servers for analysis</li>
+            <li>Mistral AI's use of this data is governed by their own privacy policies</li>
+            <li>We do not store the raw image data persistently</li>
+            <li>Only the extracted skill information is saved in our database</li>
+        </ul>
+
+        <h2 class="text-xl font-bold mt-4 mb-2">8. Changes to This Policy</h2>
+        <p>We may update this privacy policy from time to time. We will notify you of any significant changes by posting the new policy on this page and updating the "Last updated" date.</p>
+
+        <h2 class="text-xl font-bold mt-4 mb-2">9. Data Breaches</h2>
+        <p>In the event of a data breach, we will:</p>
+        <ul class="list-disc pl-8">
+            <li>Notify affected users within 72 hours</li>
+            <li>Take immediate steps to mitigate the breach</li>
+            <li>Work with authorities to investigate and resolve the issue</li>
+        </ul>
+
+        <p class="mt-4">Last updated: January 17, 2025</p>
+    </div>
+{% endblock %}

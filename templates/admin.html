@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <h1 class="text-2xl font-bold mb-4">Admin Dashboard</h1>
+    
+    <div class="bg-gray-800 p-4 rounded-lg">
+        <h2 class="text-xl font-semibold mb-2">User Management</h2>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-gray-700">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">Username</th>
+                        <th class="px-4 py-2">Game Username</th>
+                        <th class="px-4 py-2">Admin</th>
+                        <th class="px-4 py-2">Status</th>
+                        <th class="px-4 py-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr class="hover:bg-gray-600">
+                        <td class="border px-4 py-2">{{ user.username }}</td>
+                        <td class="border px-4 py-2">{{ user.decrypt_game_username_with_key() }}</td>
+                        <td class="border px-4 py-2">{{ 'Yes' if user.is_admin else 'No' }}</td>
+                        <td class="border px-4 py-2">{{ 'Banned' if user.is_banned else 'Active' }}</td>
+                        <td class="border px-4 py-2">
+                            {% if not user.is_admin %}
+                                {% if user.is_banned %}
+                                <form method="POST" action="{{ url_for('unban_user', user_id=user.id) }}" class="inline">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Unban</button>
+                                </form>
+                                {% else %}
+                                <form method="POST" action="{{ url_for('ban_user', user_id=user.id) }}" class="inline">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Ban</button>
+                                </form>
+                                {% endif %}
+                                <form method="POST" action="{{ url_for('admin_unlink_game_username', user_id=user.id) }}" class="inline">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">Unlink Game Username</button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

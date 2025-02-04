@@ -1,0 +1,9 @@
+Flask
+Flask-SQLAlchemy
+Flask-Limiter
+langchain
+Flask-Dance[requests]
+requests-oauthlib
+Pillow
+bcrypt
+cryptography

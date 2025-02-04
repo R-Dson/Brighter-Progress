@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Review Extracted Data - Brighter Progress{% endblock %}
+
+{% block content %}
+    <div class="container mx-auto p-4">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                {% if session.get('user_id') %}
+                    <span class="text-gray-300 mr-2">Logged in as: {{ session['username'] }}</span>
+                    <a href="/logout" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Logout</a>
+                {% else %}
+                    <a href="/login" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mr-2 focus:outline-none focus:shadow-outline">Login</a>
+                    <a href="/register" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Register</a>
+                {% endif %}
+            </div>
+        </div>
+        <h1 class="text-2xl font-bold mb-4">Review Extracted Data</h1>
+        <p class="mb-4">Please review the extracted data below. If it looks correct, click Approve. Otherwise, click Reject.</p>
+        <form action="/save_ocr_data" method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="username" value="{{ username }}">
+            {% for region, skills in extracted_data.items() %}
+                <h2 class="text-xl font-semibold mt-6 mb-2">{{ region }}</h2>
+                <ul class="list-disc ml-5">
+                    {% for skill in skills %}
+                        <li>
+                            {{ skill.Skill }}: <input type="text" name="{{ region }}_{{ skill.Skill }}" value="{{ skill.Level }}" class="bg-gray-800 border border-gray-700 rounded px-2 py-1 text-white w-16">
+                            <span id="{{ region }}_{{ skill.Skill }}_error" class="bg-red-100 text-red-700 px-2 py-1 rounded ml-2 hidden"></span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+            <button type="submit" class="mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Approve</button>
+        </form>
+        <a href="/paste_image" class="inline-block mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Reject</a>
+    </div>
+{% endblock %}
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        let isValid = true;
+        {% for region, skills in extracted_data.items() %}
+            {% for skill in skills %}
+                let skillName = "{{ skill.Skill }}";
+                let regionName = "{{ region }}";
+                let inputField = document.querySelector('input[name="' + regionName + '_' + skillName + '"]');
+                let errorSpan = document.getElementById(regionName + '_' + skillName + '_error');
+                let level = parseInt(inputField.value);
+
+                if (isNaN(level) || level < 1 || level > 500) {
+                    errorSpan.textContent = "Must be a number between 1 and 500";
+                    errorSpan.classList.remove('hidden');
+                    isValid = false;
+                } else {
+                    errorSpan.classList.add('hidden');
+                }
+            {% endfor %}
+        {% endfor %}
+
+        if (!isValid) {
+            event.preventDefault(); // Prevent form submission
+        }
+    });
+</script>

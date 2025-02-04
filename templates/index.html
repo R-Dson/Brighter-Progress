@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container mx-auto p-4 flex-grow right">
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-2xl font-bold mb-4">Search</h1>
+                <form action="/search" method="get">
+                    <input type="text" name="username" placeholder="Search Username" class="bg-gray-800 border border-gray-700 p-2 rounded text-white focus:outline-none focus:border-blue-500">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Search</button>
+                </form>
+            </div>
+            <div class="mt-8">
+                {% if session.get('user_id') %}
+                    <a href="/paste_image" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Submit Image</a>
+                {% endif %}
+            </div>
+            
+            
+        </div>
+        <div>
+            <div>
+                <h2 class="text-xl font-bold mb-4">Recently Updated Characters</h2>
+                <ul>
+                    {% for username in recently_updated_users %}
+                        <li><a href="{{ url_for('search', username=username) }}" class="text-blue-500 hover:text-blue-700">{{ username }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock %}

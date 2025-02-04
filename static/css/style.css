@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body.bg-gray-900.text-white {
+    background-color: #1A1A1D;
+    color: #f9fafb;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+footer {
+    margin-top: auto;
+    background-color: #1A1A1D;
+    padding: 1rem 0;
+    flex-shrink: 0;
+}
+
+.container.mx-auto.p-4 {
+    padding-bottom: 0;
+}
+
+/* Animation specific styles */
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: .5;
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.bg-gray-900 .bg-gray-100 {
+    background-color: #6A1E55;
+    border-color: #070708;
+    border-width: 1px;
+}
+a.bg-gray-300 {
+    background-color: #6A1E55;
+    border-color: #070708;
+    border-width: 1px;
+}
+a.bg-gray-300:hover {
+    background-color: #561945;
+
+}
+.bg-gray-900 .text-gray-700 {
+    color: #D1D5DB;
+}
+
+.bg-gray-900 .bg-blue-500 {
+    background-color: #6A1E55;
+    border-color: #070708;
+    border-width: 1px;
+}
+.bg-gray-900 .bg-blue-500:hover {
+    background-color: #561945;
+}
+
+
+button.bg-blue-600:hover {
+    background-color: #561945;
+}
+
+button.bg-blue-600 {
+    background-color: #6A1E55;
+    border-color: #070708;
+    border-width: 1px;
+}
+
+.bg-gray-900 .hover:bg-red-700:hover {
+    background-color: #421335;
+}
+
+.bg-gray-900 .bg-white {
+    background-color: #2D1E2F;
+    color: #f9fafb;
+}
+
+.bg-gray-900 .text-gray-800 {
+    color: #E5E7EB;
+}
+
+.bg-gray-900 .bg-gray-200 {
+    background-color: #2D1E2F;
+}
+
+.bg-gray-900 .border-gray-200 {
+    border-color: #4A5568;
+}
+
+.bg-gray-900 .ring-gray-200 {
+    --tw-ring-color: #4A5568;
+}
+
+.bg-gray-900 .focus:border-blue-500:focus {
+    border-color: #6A1E55;
+}
+
+.bg-gray-900 .text-gray-900 {
+    color: #F9FAFB;
+}
+
+.bg-gray-900 .shadow-md {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.bg-gray-900 .bg-gray-800 {
+    background-color: #2d2d32;
+}
+
+.bg-gray-900 .border-gray-700 {
+    border-color: #070708;
+    /*#3B1C32;*/
+}
+
+.bg-gray-900 .text-white {
+    color: #F9FAFB;
+}
